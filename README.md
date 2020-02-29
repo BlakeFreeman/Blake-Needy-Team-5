@@ -14,8 +14,8 @@ Two weeks ago, Budweiser had asked Neddy and Blake Inc. to analyse a specific br
 ## Data Sets 
 
 
-    Beer.csv
-    Breweries.csv 
+ Beer.csv
+ Breweries.csv 
 
 
 ## Getting Started
@@ -25,13 +25,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-```
-A functional PC with at least 4 GB 
-```
 
-```
+A functional PC with at least 4 GB 
+
+
+
 Access to a command line such as gitbash
-```
+
 
 ### Installing
 
