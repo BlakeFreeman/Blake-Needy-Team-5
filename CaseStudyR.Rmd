@@ -46,7 +46,6 @@ This was an initail look at the beer data. The type of data shows Name of the be
 #Brewery data
 ```{r}
 breweries_df
-
 ```
 
 This was an initail look at the Brewery data. The type of data shows the Name of the brewery, City and State. When reviewing this Data I noticed there were duplicate values proceeded in the process of removing these data points from the Values. 
@@ -63,14 +62,12 @@ On futher exploration on the Brewery Data I checked to see if we had duplicated 
 
 ```{r}
 #duplicated(beers_df$Name)
-
 beers_df <- beers_df[!duplicated(beers_df$Name), ] 
 beers_df
 ```
 
 
-On futher exploration on the Beer Data I checked to see if we had duplicated values in the Name category. I noticed that there were some values duplicated and removed these from the Beer Data set. There was a total of 105 rows removed from the Beer Data set from the first pass 
-
+On futher exploration on the Beer Data I checked to see if we had duplicated values in the Name category. We noticed that there were some values duplicated and removed these from the Beer Data set. There was a total of 105 rows removed from the Beer Data set from the first pass 
 
 
 ```{r}
@@ -98,6 +95,7 @@ beers_df <-beers_df[ ! beers_df$Name %in% beers_to_drop_list, ]
 beers_df
 ```
 
+On review there was another duplication that was discovered in the Data. We noticed that some beers are duplicated but have a slightly diffrent name with the year in () at the end of the beers name. Since those values were the same we decided to remove these since they are the same beer in all other aspects other than name and beer id. The code above is how we addressed that issue. 
 
 #Addressing the Null Values
 ```{r}

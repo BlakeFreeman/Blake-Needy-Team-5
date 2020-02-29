@@ -1,7 +1,9 @@
 
 # A Dive into Beer and Breweries.
-    By Neddy Nyatome and Blake Freeman
 
+```
+    By Neddy Nyatome and Blake Freeman
+```
 
 ## Purpose, Summary and scope 
 
@@ -10,9 +12,11 @@ Two weeks ago, Budweiser had asked Neddy and Blake Inc. to analyse a specific br
 ``` 
 
 ## Data Sets 
+
+```
     Beer.csv
     Breweries.csv 
-
+```
 
 ## Getting Started
 
