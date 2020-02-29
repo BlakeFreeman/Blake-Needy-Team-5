@@ -40,7 +40,7 @@ Access to a command line such as gitbash
 Install R 
 ```
 ```
-Clone the rep 
+Clone the repo 
 ```
  
 ```
