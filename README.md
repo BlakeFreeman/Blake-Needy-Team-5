@@ -1,28 +1,28 @@
 
 # A Dive into Beer and Breweries.
 
-```
-    By Neddy Nyatome and Blake Freeman
-```
+
+ By Neddy Nyatome and Blake Freeman
+
 
 ### Purpose, Summary and scope 
 
-```
+
 Two weeks ago, Budweiser had asked Neddy and Blake Inc. to analyse a specific brewery and beer data sample and report any interesting findings that may be uncovered through the analysis. Using various data science methods, Neddy and Blake inc. have analysed data distribution, the relationship between beer and brewery and have addressed various data as needed. We used R to compile and do an EDA of the data.
-```
+
 
 ## Data Sets 
 
-```
+
     Beer.csv
     Breweries.csv 
-```
+
 
 ## Getting Started
 
-```
+
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
-```
+
 ### Prerequisites
 
 ```
@@ -36,25 +36,24 @@ Access to a command line such as gitbash
 ### Installing
 
 
-```
+
 Install R 
-```
-```
+
 Clone the repo 
-```
+
  
-```
+
 Open files in your local machine 
-```
+
 
 
 ## Libraries needed in R
 
-    tidyverse
-    class 
-    caret 
-    e1071
-    ggplot2 
+tidyverse
+class 
+caret 
+e1071
+ggplot2 
 
 
 ### Break down of the code
