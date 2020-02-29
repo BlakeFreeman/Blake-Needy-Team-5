@@ -3,9 +3,9 @@ title: "Case Study 1"
 author: "Blake Freeman & Neddy Nyatome"
 date: 'null'
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 Introduction:
@@ -28,9 +28,9 @@ library(ggplot2)
 
 #Import the files
 ```{r}
-beers_df = read.csv("C:/Users/blake/Desktop/MSDS/Case/CaseStudy1/Beers.csv",header = TRUE,stringsAsFactors=FALSE)
+beers_df = read.csv("C:/Users/blake/Desktop/MSDS/Case/CaseStudy1/Data/Beers.csv",header = TRUE,stringsAsFactors=FALSE)
 
-breweries_df = read.csv("C:/Users/blake/Desktop/MSDS/Case/CaseStudy1/Breweries.csv",header = TRUE,stringsAsFactors=FALSE)
+breweries_df = read.csv("C:/Users/blake/Desktop/MSDS/Case/CaseStudy1/Data/Breweries.csv",header = TRUE,stringsAsFactors=FALSE)
 
 ```
 
@@ -254,11 +254,5 @@ Ale
 ```
 
 
-```{r}
-Aletest = df %>% filter(df, !grepl("IPA",Style) | df, grepl("IPA",Style))
 
-df1 = data.frame(Style = "IPA")
-knn(Aletest[,c(7,8)], df1, Aletest$Style, k = 5, prob = TRUE)
-knn(Aletest[,c(7,8)], df1, Aletest$Style, k = 15, prob = TRUE)
-```
 
