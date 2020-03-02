@@ -28,9 +28,9 @@ library(ggplot2)
 
 #Import the files
 ```{r}
-beers_df = read.csv("C:/Users/blake/Desktop/MSDS/Case/CaseStudy1/Data/Beers.csv",header = TRUE,stringsAsFactors=FALSE)
+beers_df = read.csv("C:/Users/bfreeman/Desktop/Test/Blake-Needy-Team-5/Data/Beers.csv",header = TRUE,stringsAsFactors=FALSE)
 
-breweries_df = read.csv("C:/Users/blake/Desktop/MSDS/Case/CaseStudy1/Data/Breweries.csv",header = TRUE,stringsAsFactors=FALSE)
+breweries_df = read.csv("C:/Users/bfreeman/Desktop/Test/Blake-Needy-Team-5/Data/Breweries.csv",header = TRUE,stringsAsFactors=FALSE)
 
 ```
 
@@ -233,26 +233,163 @@ IBU_ABV
 Based on the graph above. It is apprent there is a postive relationshipfor Alcohol Content and IBU. Now with that being said the large majoriity of this is cocentrated between just below 5% to 6% but there still shows a postive trend. 
 
 ```{r}
-df <-  dplyr::filter(beer_breweries_df, grepl("Ale",Style))
-Ale <-  dplyr::filter(df, !grepl("IPA",Style))
-IPA <-  dplyr::filter(df, grepl("IPA",Style))
+Ale <-  dplyr::filter(beer_breweries_df, grepl("Ale",Name.y
+))
+
+IPA <-  dplyr::filter(beer_breweries_df, grepl("IPA",Name.y
+))
+IPA$Type <- "IPA"
+Ale$Type <- "Ale"
 IPA
 Ale
+
+
+Ale_IPA <- rbind(Ale,IPA)
+Ale_IPA
+
+Ale_IPA_df <- select(Ale_IPA,ABV,IBU,Type)
+Ale_IPA_df
 ```
 
+We filtered the data to be two Data sets one for Ale and One for IPA then added a new column to each called "Type" identifiying them as either IPA's or ALE's. From this point I appeneded the two dataframes together to make one useable set to test off of called ALE_IPA. 
+
+
+
+```{r}
+Ale_IPA_df %>% ggplot(aes(x = ABV, y = IBU , color = Type)) + geom_point()
+```
 
 ```{r}
 #Use KNN to investigate the relationship between IPA and other Ales
 #Find ABV and IBU for both any beer with 'Ale' in its name other than IPA and India Pale Ales (IPA)
+
+set.seed(500)
 splitPerc = .70
-Ale <-beer_breweries_df %>% select(ABV,IBU) %>% filter(str_detect(beer_breweries_df$Name.x,"Ale$") | str_detect(beer_breweries_df$Name.x,"India Pale Ale$"))
-head(Ale)
-dim(Ale)
-summary(Ale)
-Ale
+
+
+trainIndices = sample(1:dim(Ale_IPA_df)[1],round(splitPerc * dim(Ale_IPA_df)[1]))
+train = Ale_IPA_df[trainIndices,]
+test = Ale_IPA_df[-trainIndices,]
+
+
+classifications = knn(train[,c(1,2)],test[,c(1,2)],train$Type, prob = TRUE, k = 30)
+table(classifications,test$Type)
+confusionMatrix(table(classifications,test$Type))
+
+```
+The initial test to see the value and correlation using KNN
+```{r}
+set.seed(500)
+iterations = 100
+numks = 60
+splitPerc = .70
+
+masterAcc = matrix(nrow = iterations, ncol = numks)
+
+for(j in 1:iterations)
+{
+  trainIndices = sample(1:dim(Ale_IPA_df)[1],round(splitPerc * dim(Ale_IPA_df)[1]))
+  train = Ale_IPA_df[trainIndices,]
+  test = Ale_IPA_df[-trainIndices,]
+  for(i in 1:numks)
+  {
+    classifications = knn(train[,c(1,2)],test[,c(1,2)],train$Type, prob = TRUE, k = i)
+    table(classifications,test$Type)
+    CM = confusionMatrix(table(classifications,test$Type))
+    masterAcc[j,i] = CM$overall[1]
+  }
+  
+}
+
+MeanAcc = colMeans(masterAcc)
+
+plot(seq(1,numks,1),MeanAcc, type = "l")
+
+which.max(MeanAcc)
+max(MeanAcc)
+
 
 ```
 
+```{r}
+set.seed(500)
+splitPerc = .70
+
+
+trainIndices = sample(1:dim(Ale_IPA_df)[1],round(splitPerc * dim(Ale_IPA_df)[1]))
+train = Ale_IPA_df[trainIndices,]
+test = Ale_IPA_df[-trainIndices,]
+
+
+classifications = knn(train[,c(1,2)],test[,c(1,2)],train$Type, prob = TRUE, k = 29)
+table(classifications,test$Type)
+confusionMatrix(table(classifications,test$Type))
+```
+```{r}
+Relationship_with_state <- select(beer_breweries_df,State,ABV,IBU,Style,Ounces)
+Relationship_with_state$Style[Relationship_with_state$Style == ""] <- NA
+Relationship_with_state<- na.omit(Relationship_with_state)
+
+df2 <- transform(Relationship_with_state,StyleID=as.numeric(factor(Style)))
+df2
+```
+
+Turned the style into a factor and numeric so that I can try to see if there if there is anyway to predect what state the beer comes from based on ABV, IBU and Style of Beer. But to do so I had to create a column to create a unique identifier for each Style name so that it can be used to in KNN model. 
+
+```{r}
+set.seed(500)
+splitPerc = .70
+
+
+trainIndices = sample(1:dim(df2)[1],round(splitPerc * dim(df2)[1]))
+train = df2[trainIndices,]
+test = df2[-trainIndices,]
+
+
+classifications = knn(train[,c(2,6)],test[,c(2,6)],train$State, prob = TRUE, k = 30)
+
+
+u <- union(classifications,test$State)
+t <- table(factor(classifications, u), factor(test$State, u))
+confusionMatrix(t)
+
+```
+
+```{r}
+
+set.seed(500)
+iterations = 100
+numks = 60
+splitPerc = .70
+
+masterAcc = matrix(nrow = iterations, ncol = numks)
+
+for(j in 1:iterations)
+{
+  trainIndices = sample(1:dim(df2)[1],round(splitPerc * dim(df2)[1]))
+  train = df2[trainIndices,]
+  test = df2[-trainIndices,]
+  for(i in 1:numks)
+  {
+    classifications = knn(train[,c(2,3,5,6)],test[,c(2,3,5,6)],train$State, prob = TRUE, k = i)
+    u <- union(classifications,test$State)
+    t <- table(factor(classifications, u), factor(test$State, u))
+    CM = confusionMatrix(t)
+    masterAcc[j,i] = CM$overall[1]
+  }
+  
+}
+
+MeanAcc = colMeans(masterAcc)
+
+plot(seq(1,numks,1),MeanAcc, type = "l")
+
+which.max(MeanAcc)
+max(MeanAcc)
+
+```
+
+Based on this, it shows that State has no bearing on the ABV, IBU, Ounces and Style of beer. This means that you can use this infomration to move/open more sites to be  more closely tied to your customer bases. 
 
 
 
